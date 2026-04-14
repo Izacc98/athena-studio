@@ -1,0 +1,40 @@
+datasource db {
+  provider = "postgresql"
+}
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+model Artist {
+  id           String        @id @default(cuid())
+  name         String
+  specialty    String
+  bio          String?
+  imageUrl     String?       // Para la foto del artista
+  createdAt    DateTime      @default(now())
+  appointments Appointment[] // Relación: Un artista tiene muchas citas
+}
+
+model Appointment {
+  id           String   @id @default(cuid())
+  clientName   String
+  description  String
+  
+  // ESTE ES EL NUEVO CAMPO:
+  appointmentDate DateTime 
+  
+  status       String   @default("PENDING") // PENDING, CONFIRMED, COMPLETED
+  createdAt    DateTime @default(now())
+  
+  artistId     String?
+  artist       Artist?  @relation(fields: [artistId], references: [id])
+}
+
+model TattooWork {
+  id          String   @id @default(cuid())
+  title       String
+  imageUrl    String   // Aquí irá el link de la foto
+  category    String?  // Ej: "Realismo", "Blackwork"
+  createdAt   DateTime @default(now())
+}
