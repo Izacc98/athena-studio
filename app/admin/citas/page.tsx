@@ -3,6 +3,8 @@ import { format } from "date-fns"
 import { es } from "date-fns/locale"
 import { StatusButtons } from "./StatusButtons"
 
+export const dynamic = 'force-dynamic'
+
 export default async function AdminCitasPage() {
   const appointments = await prisma.appointment.findMany({
     orderBy: { appointmentDate: 'asc' }, // Orden cronológico
