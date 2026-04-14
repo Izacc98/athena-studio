@@ -7,6 +7,7 @@ import { useState } from 'react'
 const menuItems = [
   { href: '/admin', label: 'Galería' },
   { href: '/admin/obras', label: 'Obras' },
+  { href: '/admin/colaboradores', label: 'Colaboradores' },
   { href: '/admin/citas', label: 'Citas' },
 ]
 
@@ -16,10 +17,12 @@ export default function AdminNavigation() {
   const [isMenuOpen, setIsMenuOpen] = useState(false)
 
   const handleLogout = async () => {
-    // Eliminar la cookie de autenticación
-    document.cookie = 'admin_auth=; path=/; expires=Thu, 01 Jan 1970 00:00:00 GMT'
-    // Redirigir al login
-    router.push('/login')
+    try {
+      await fetch('/api/auth', { method: 'DELETE' })
+    } catch (error) {
+      console.error('Logout error:', error)
+    }
+    router.push('/home')
   }
 
   const closeMenu = () => setIsMenuOpen(false)

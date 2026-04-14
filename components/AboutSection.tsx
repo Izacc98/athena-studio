@@ -2,22 +2,7 @@
 import { motion } from 'framer-motion'
 import { MapPin, Award, Users } from 'lucide-react'
 
-export default function AboutSection() {
-  const team = [
-    {
-      name: "Arturo Romero",
-      role: "Especialista en Fine Line",
-      bio: "Con más de 8 años de experiencia transformando ideas en trazos delicados y eternos.",
-      image: "/team/artista1.jpg" // Asegúrate de tener estas fotos team\artista1.jpg
-    },
-    {
-      name: "Joss ",
-      role: "Blackwork & Dark Art",
-      bio: "Maestra del contraste y las sombras, enfocado en piezas de gran formato.",
-      image: "./team/artista1.jpg"
-    }
-  ]
-
+export default function AboutSection({ team }: { team: any[] }) {
   return (
     <section id="sobre-nosotros" className="bg-black text-white py-32 px-6 border-t border-zinc-900">
       <div className="max-w-7xl mx-auto">
@@ -60,7 +45,7 @@ export default function AboutSection() {
           <div className="grid grid-cols-1 md:grid-cols-2 gap-12">
             {team.map((member, index) => (
               <motion.div 
-                key={index}
+                key={member.id}
                 initial={{ opacity: 0, y: 20 }}
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
@@ -68,11 +53,11 @@ export default function AboutSection() {
                 className="group relative overflow-hidden flex flex-col md:flex-row gap-8 items-center bg-zinc-950/30 p-8 rounded-3xl border border-zinc-900 hover:border-zinc-700 transition-colors"
               >
                 <div className="w-48 h-48 rounded-full overflow-hidden grayscale group-hover:grayscale-0 transition-all duration-700 border-2 border-zinc-800">
-                  <img src={member.image} alt={member.name} className="w-full h-full object-cover" />
+                  <img src={member.imageUrl} alt={member.name} className="w-full h-full object-cover" />
                 </div>
                 <div className="flex-1 text-center md:text-left">
                   <h4 className="text-2xl font-bold italic uppercase">{member.name}</h4>
-                  <p className="text-zinc-500 text-[10px] uppercase tracking-widest mb-4">{member.role}</p>
+                  <p className="text-zinc-500 text-[10px] uppercase tracking-widest mb-4">{member.specialty}</p>
                   <p className="text-sm text-zinc-400 leading-relaxed">{member.bio}</p>
                 </div>
               </motion.div>

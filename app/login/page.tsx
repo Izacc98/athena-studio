@@ -6,6 +6,7 @@ import { motion } from 'framer-motion'
 export default function LoginPage() {
   const [password, setPassword] = useState('')
   const [error, setError] = useState(false)
+  const [logoutMessage, setLogoutMessage] = useState('')
   const router = useRouter()
 
   const handleLogin = async (e: React.FormEvent) => {
@@ -22,6 +23,18 @@ export default function LoginPage() {
       router.refresh()
     } else {
       setError(true)
+    }
+  }
+
+  const handleLogout = async () => {
+    try {
+      const res = await fetch('/api/auth', { method: 'DELETE' })
+      if (res.ok) {
+        setLogoutMessage('Sesión cerrada correctamente. Ahora puedes iniciar sesión de nuevo.')
+        router.push('/home')
+      }
+    } catch (error) {
+      console.error('Logout failed', error)
     }
   }
 
@@ -46,6 +59,15 @@ export default function LoginPage() {
             Entrar al Panel
           </button>
         </form>
+        {logoutMessage && (
+          <p className="mt-4 text-emerald-500 text-[10px] uppercase tracking-widest">{logoutMessage}</p>
+        )}
+        <button
+          onClick={handleLogout}
+          className="mt-6 w-full rounded-xl border border-red-500/40 bg-red-500/10 py-4 text-sm uppercase tracking-widest text-red-300 transition hover:bg-red-500/20 hover:text-white"
+        >
+          Cerrar sesión
+        </button>
       </motion.div>
     </main>
   )

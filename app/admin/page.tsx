@@ -147,7 +147,7 @@ export default function AdminPage() {
           <div className="rounded-3xl border border-zinc-900 bg-black/40 p-5 text-sm text-zinc-400">
             <p className="uppercase tracking-[0.35em] text-zinc-500">Consejo rápido</p>
             <p className="mt-3 leading-6">
-              Usa la sección "Obras" para actualizar títulos y categorías. Para borrar una imagen, selecciona el botón "Eliminar" en la lista.
+              Usa la sección "Obras" para actualizar títulos, categorías e incluso cambiar las imágenes. Para borrar una imagen, selecciona el botón "Eliminar" en la lista.
             </p>
           </div>
         </aside>

@@ -16,7 +16,7 @@ export default async function AdminObrasPage() {
           <div>
             <h1 className="text-4xl font-black uppercase tracking-tight italic">Administrar Obras</h1>
             <p className="mt-2 text-zinc-500 text-sm uppercase tracking-[0.35em]">
-              Ver, actualizar o borrar imágenes y categorías.
+              Ver, actualizar o borrar imágenes, títulos y categorías.
             </p>
           </div>
 
@@ -60,7 +60,7 @@ export default async function AdminObrasPage() {
                 </div>
 
                 <div className="mt-6 rounded-3xl border border-zinc-900 bg-black/30 p-5">
-                  <p className="text-zinc-400 text-sm mb-4">Editar título o categoría de esta obra.</p>
+                  <p className="text-zinc-400 text-sm mb-4">Editar título, categoría o imagen de esta obra.</p>
                   <form action={updateWork} className="grid gap-4 sm:grid-cols-2">
                     <input type="hidden" name="id" value={work.id} />
 
@@ -75,11 +75,27 @@ export default async function AdminObrasPage() {
 
                     <label className="space-y-2 text-xs uppercase tracking-[0.35em] text-zinc-500">
                       Categoría
-                      <input
+                      <select
                         name="category"
                         defaultValue={work.category ?? ''}
                         className="w-full rounded-2xl border border-zinc-800 bg-zinc-900 px-4 py-3 text-sm text-white outline-none transition focus:border-white"
+                      >
+                        <option value="Blackwork">Blackwork</option>
+                        <option value="Fine Line">Fine Line</option>
+                        <option value="Realismo">Realismo</option>
+                        <option value="Tradicional">Tradicional</option>
+                      </select>
+                    </label>
+
+                    <label className="space-y-2 text-xs uppercase tracking-[0.35em] text-zinc-500 sm:col-span-2">
+                      Nueva imagen (opcional)
+                      <input
+                        name="image"
+                        type="file"
+                        accept="image/*"
+                        className="block w-full text-sm text-zinc-300 file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-white file:text-black hover:file:bg-zinc-200 cursor-pointer"
                       />
+                      <p className="text-xs text-zinc-600 mt-1">Deja vacío para mantener la imagen actual</p>
                     </label>
 
                     <button type="submit" className="rounded-2xl border border-white/10 bg-white px-5 py-4 text-sm font-black uppercase tracking-[0.35em] text-black transition hover:bg-zinc-200 sm:col-span-2">

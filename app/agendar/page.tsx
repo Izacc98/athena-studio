@@ -20,7 +20,7 @@ export default function Agendar() {
                 RESERVAR AHORA
               </button>
             </Link>
-
+            <br></br>
             <p className="text-zinc-600 text-sm">
               Consulta gratuita • Sin compromiso • Diseño personalizado
             </p>
@@ -62,7 +62,8 @@ export default function Agendar() {
       {/* Footer */}
       <footer className="py-16 text-center border-t border-zinc-900">
         <p className="text-zinc-800 text-[10px] tracking-[0.6em] uppercase mb-4">
-          Athena Studio — Arte Eterno
+          Athena Studio — Arte Eterno <br></br>
+          - © MonOS
         </p>
         <p className="text-zinc-900 text-[9px] uppercase tracking-widest">
           Puebla, México — MMXXVI

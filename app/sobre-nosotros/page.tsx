@@ -1,7 +1,14 @@
 import FadeIn from "@/components/FadeIn"
 import AboutSection from '@/components/AboutSection'
+import { prisma } from "@/lib/prisma"
 
-export default function SobreNosotros() {
+export const dynamic = 'force-dynamic'
+
+export default async function SobreNosotros() {
+  const collaborators = await prisma.artist.findMany({
+    orderBy: { createdAt: 'asc' },
+  })
+
   return (
     <main className="min-h-screen bg-black text-white pt-20">
       <FadeIn>
@@ -17,12 +24,13 @@ export default function SobreNosotros() {
         </section>
       </FadeIn>
 
-      <AboutSection />
+      <AboutSection team={collaborators} />
 
       {/* Footer */}
       <footer className="py-16 text-center border-t border-zinc-900 mt-32">
         <p className="text-zinc-800 text-[10px] tracking-[0.6em] uppercase mb-4">
-          Athena Studio — Arte Eterno
+          Athena Studio — Arte Eterno <br></br>
+          - © MonOS
         </p>
         <p className="text-zinc-900 text-[9px] uppercase tracking-widest">
           Puebla, México — MMXXVI

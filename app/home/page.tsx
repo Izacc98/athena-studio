@@ -4,13 +4,20 @@ import FadeIn from "@/components/FadeIn"
 import PortfolioGallery from "@/components/PortfolioGallery"
 import AboutSection from '@/components/AboutSection'
 
+export const dynamic = 'force-dynamic'
+
 export default async function Home() {
   // 1. Traemos todos los trabajos de la base de datos
   const works = await prisma.tattooWork.findMany({
     orderBy: { createdAt: 'desc' }
   })
 
-  // 2. Extraemos las categorías únicas
+  // 2. Traemos colaboradores
+  const collaborators = await prisma.artist.findMany({
+    orderBy: { createdAt: 'asc' }
+  })
+
+  // 3. Extraemos las categorías únicas
   const rawCategories = works.map(w => w.category).filter((c): c is string => !!c)
   const categories = Array.from(new Set(rawCategories))
 
@@ -41,7 +48,7 @@ export default async function Home() {
 
       {/* 3. SOBRE NOSOTROS - El alma del estudio */}
       <FadeIn>
-        <AboutSection />
+        <AboutSection team={collaborators} />
       </FadeIn>
 
       {/* 4. REDES SOCIALES - Vinculación */}
@@ -103,7 +110,8 @@ export default async function Home() {
       {/* Footer Pro */}
       <footer className="py-16 text-center border-t border-zinc-900">
         <p className="text-zinc-800 text-[10px] tracking-[0.6em] uppercase mb-4">
-          Athena Studio — Arte Eterno — MonOS
+          Athena Studio — Arte Eterno <br></br>
+          - © MonOS
         </p>
         <p className="text-zinc-900 text-[9px] uppercase tracking-widest">
           Puebla, México — MMXXVI
