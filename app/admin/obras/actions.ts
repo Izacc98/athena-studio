@@ -12,10 +12,9 @@ const supabase = createClient(
 export async function updateWork(formData: FormData) {
   const id = formData.get("id")?.toString()
   const title = formData.get("title")?.toString()
-  const category = formData.get("category")?.toString()
-  const imageFile = formData.get("image") as File | null
+  const categoryId = formData.get("categoryId")?.toString()
 
-  if (!id || !title || !category) return
+  if (!id || !title) return
 
   let imageUrl = undefined
 
@@ -45,7 +44,7 @@ export async function updateWork(formData: FormData) {
   // Actualizar la obra con los nuevos datos
   const updateData: any = {
     title,
-    category,
+    categoryId: categoryId || null,
   }
 
   if (imageUrl) {

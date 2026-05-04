@@ -7,6 +7,11 @@ export const dynamic = 'force-dynamic'
 export default async function AdminObrasPage() {
   const works = await prisma.tattooWork.findMany({
     orderBy: { createdAt: 'desc' },
+    include: { category: true },
+  })
+
+  const categories = await prisma.category.findMany({
+    orderBy: { name: 'asc' },
   })
 
   return (
@@ -23,6 +28,9 @@ export default async function AdminObrasPage() {
           <div className="flex flex-wrap gap-3">
             <Link href="/admin" className="rounded-full border border-zinc-700 bg-white/5 px-4 py-2 text-sm uppercase tracking-[0.35em] text-white transition hover:border-white hover:bg-white/10">
               Subir nueva obra
+            </Link>
+            <Link href="/admin/categorias" className="rounded-full border border-zinc-700 bg-white/5 px-4 py-2 text-sm uppercase tracking-[0.35em] text-white transition hover:border-white hover:bg-white/10">
+              Gestionar categorías
             </Link>
             <Link href="/admin/citas" className="rounded-full border border-zinc-700 bg-white/5 px-4 py-2 text-sm uppercase tracking-[0.35em] text-white transition hover:border-white hover:bg-white/10">
               Ir a citas
@@ -47,7 +55,7 @@ export default async function AdminObrasPage() {
                 <div className="flex flex-col gap-2 sm:flex-row sm:items-center sm:justify-between">
                   <div>
                     <h2 className="text-2xl font-black uppercase tracking-tight">{work.title}</h2>
-                    <p className="text-zinc-500 text-sm uppercase tracking-[0.3em] mt-1">{work.category || 'Sin categoría'}</p>
+                    <p className="text-zinc-500 text-sm uppercase tracking-[0.3em] mt-1">{work.category?.name || 'Sin categoría'}</p>
                   </div>
                   <div className="flex flex-wrap gap-2">
                     <form action={deleteWork} className="inline-flex">
@@ -76,14 +84,14 @@ export default async function AdminObrasPage() {
                     <label className="space-y-2 text-xs uppercase tracking-[0.35em] text-zinc-500">
                       Categoría
                       <select
-                        name="category"
-                        defaultValue={work.category ?? ''}
+                        name="categoryId"
+                        defaultValue={work.categoryId ?? ''}
                         className="w-full rounded-2xl border border-zinc-800 bg-zinc-900 px-4 py-3 text-sm text-white outline-none transition focus:border-white"
                       >
-                        <option value="Blackwork">Blackwork</option>
-                        <option value="Fine Line">Fine Line</option>
-                        <option value="Realismo">Realismo</option>
-                        <option value="Tradicional">Tradicional</option>
+                        <option value="">Sin categoría</option>
+                        {categories.map(cat => (
+                          <option key={cat.id} value={cat.id}>{cat.name}</option>
+                        ))}
                       </select>
                     </label>
 

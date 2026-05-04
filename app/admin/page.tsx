@@ -1,5 +1,5 @@
 ﻿"use client"
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import Link from 'next/link'
 import { createClient } from '@supabase/supabase-js'
 import { saveWork } from './actions'
@@ -12,8 +12,21 @@ const supabase = createClient(
 
 export const dynamic = 'force-dynamic'
 
+type Category = {
+  id: string
+  name: string
+}
+
 export default function AdminPage() {
   const [loading, setLoading] = useState(false)
+  const [categories, setCategories] = useState<Category[]>([])
+
+  useEffect(() => {
+    fetch('/api/categories')
+      .then(res => res.json())
+      .then(data => setCategories(data))
+      .catch(err => console.error('Error loading categories:', err))
+  }, [])
 
   async function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault()
@@ -23,7 +36,7 @@ export default function AdminPage() {
     const formData = new FormData(form)
     const file = formData.get('image') as File
     const title = formData.get('title') as string
-    const category = formData.get('category') as string
+    const categoryId = formData.get('categoryId') as string
 
     try {
       const fileExt = file.name.split('.').pop()
@@ -39,7 +52,7 @@ export default function AdminPage() {
         .from('tattoos')
         .getPublicUrl(fileName)
 
-      await saveWork(title, publicUrl, category)
+      await saveWork(title, publicUrl, categoryId)
 
       Swal.fire({
         title: '¡Publicado!',
@@ -101,16 +114,15 @@ export default function AdminPage() {
             </div>
 
             <div>
-              <label className="block text-xs uppercase text-zinc-500 mb-2">Categoría</label>
+              <label className="block text-xs uppercase text-zinc-500 mb-2">Categoría (opcional)</label>
               <select
-                name="category"
-                required
+                name="categoryId"
                 className="w-full rounded-3xl border border-zinc-800 bg-black px-4 py-3 text-sm outline-none transition focus:border-white"
               >
-                <option value="Blackwork">Blackwork</option>
-                <option value="Fine Line">Fine Line</option>
-                <option value="Realismo">Realismo</option>
-                <option value="Tradicional">Tradicional</option>
+                <option value="">Sin categoría</option>
+                {categories.map(cat => (
+                  <option key={cat.id} value={cat.id}>{cat.name}</option>
+                ))}
               </select>
             </div>
 
@@ -135,6 +147,12 @@ export default function AdminPage() {
               className="block rounded-full border border-zinc-800 bg-white/5 px-5 py-4 text-sm uppercase tracking-[0.35em] text-white transition hover:border-white hover:bg-white/10"
             >
               Ver y editar obras
+            </Link>
+            <Link
+              href="/admin/categorias"
+              className="block rounded-full border border-zinc-800 bg-white/5 px-5 py-4 text-sm uppercase tracking-[0.35em] text-white transition hover:border-white hover:bg-white/10"
+            >
+              Gestionar categorías
             </Link>
             <Link
               href="/admin/citas"

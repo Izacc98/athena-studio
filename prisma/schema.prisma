@@ -35,6 +35,14 @@ model TattooWork {
   id          String   @id @default(cuid())
   title       String
   imageUrl    String   // Aquí irá el link de la foto
-  category    String?  // Ej: "Realismo", "Blackwork"
+  categoryId  String?
+  category    Category? @relation(fields: [categoryId], references: [id])
   createdAt   DateTime @default(now())
+}
+
+model Category {
+  id        String      @id @default(cuid())
+  name      String      @unique
+  createdAt DateTime    @default(now())
+  works     TattooWork[]
 }
