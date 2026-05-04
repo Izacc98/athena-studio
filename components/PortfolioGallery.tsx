@@ -29,6 +29,12 @@ export default function PortfolioGallery({ works, categories }: { works: any[], 
     return matchesCategory && matchesSearch
   })
 
+  const activeCategoryName = selectedCategory === 'all'
+    ? null
+    : selectedCategory === 'none'
+      ? 'Sin Categoría'
+      : categories.find(c => c.id === selectedCategory)?.name ?? 'Sin Categoría'
+
   return (
     <section className="py-20 px-6 max-w-7xl mx-auto">
       {/* FILTROS Y BÚSQUEDA */}
@@ -88,7 +94,7 @@ export default function PortfolioGallery({ works, categories }: { works: any[], 
           {filteredWorks.length} obra{filteredWorks.length !== 1 ? 's' : ''} encontrada{filteredWorks.length !== 1 ? 's' : ''}
           {selectedCategory !== 'all' && (
             <span className="ml-2">
-              en {selectedCategory === 'none' ? 'Sin Categoría' : categories.find(c => c.id === selectedCategory)?.name}
+              en {activeCategoryName}
             </span>
           )}
           {searchTerm && (
@@ -106,11 +112,17 @@ export default function PortfolioGallery({ works, categories }: { works: any[], 
             onClick={() => setSelectedImage(work)}
             className="group relative aspect-[3/4] overflow-hidden bg-zinc-900 border border-zinc-900 cursor-zoom-in rounded-sm"
           >
-            <img 
-              src={work.imageUrl} 
-              alt={work.title}
-              className="object-cover w-full h-full grayscale hover:grayscale-0 transition-all duration-700 ease-in-out group-hover:scale-110"
-            />
+            {work.imageUrl ? (
+              <img 
+                src={work.imageUrl} 
+                alt={work.title}
+                className="object-cover w-full h-full grayscale hover:grayscale-0 transition-all duration-700 ease-in-out group-hover:scale-110"
+              />
+            ) : (
+              <div className="flex h-full w-full items-center justify-center bg-zinc-800 text-zinc-500 text-sm uppercase tracking-[0.3em]">
+                Imagen no disponible
+              </div>
+            )}
             <div className="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity flex items-end p-8">
               <p className="text-[10px] uppercase tracking-[0.3em] font-bold italic">Ver detalle_</p>
             </div>
@@ -141,11 +153,17 @@ export default function PortfolioGallery({ works, categories }: { works: any[], 
               className="relative max-w-5xl w-full h-full flex flex-col items-center justify-center gap-6"
               onClick={(e) => e.stopPropagation()} // Evita cerrar al tocar la foto
             >
-              <img 
-                src={selectedImage.imageUrl} 
-                alt={selectedImage.title}
-                className="max-w-full max-h-[80vh] object-contain shadow-[0_0_80px_rgba(255,255,255,0.05)] border border-zinc-800"
-              />
+              {selectedImage.imageUrl ? (
+                <img 
+                  src={selectedImage.imageUrl} 
+                  alt={selectedImage.title}
+                  className="max-w-full max-h-[80vh] object-contain shadow-[0_0_80px_rgba(255,255,255,0.05)] border border-zinc-800"
+                />
+              ) : (
+                <div className="flex h-full w-full items-center justify-center rounded-3xl bg-zinc-900 p-20 text-zinc-500 text-center">
+                  Imagen no disponible
+                </div>
+              )}
               
               <motion.div 
                 initial={{ opacity: 0, y: 10 }}
@@ -154,7 +172,7 @@ export default function PortfolioGallery({ works, categories }: { works: any[], 
                 className="text-center"
               >
                 <h3 className="text-2xl font-black italic uppercase tracking-tighter">{selectedImage.title}</h3>
-                <p className="text-[10px] text-zinc-500 uppercase tracking-[0.5em] mt-2">{selectedImage.category}</p>
+                <p className="text-[10px] text-zinc-500 uppercase tracking-[0.5em] mt-2">{selectedImage.category?.name ?? 'Sin categoría'}</p>
               </motion.div>
             </motion.div>
           </motion.div>
