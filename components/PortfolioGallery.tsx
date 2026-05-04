@@ -3,9 +3,10 @@ import { useState, useEffect } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
 import { X } from 'lucide-react' // Usamos X de lucide o el SVG manual que ya tenemos
 
-export default function PortfolioGallery({ works, categories }: { works: any[], categories: string[] }) {
+export default function PortfolioGallery({ works, categories }: { works: any[], categories: {id: string, name: string}[] }) {
   const [selectedImage, setSelectedImage] = useState<any>(null)
   const [selectedCategory, setSelectedCategory] = useState<string>('all')
+  const [searchTerm, setSearchTerm] = useState<string>('')
 
   // Bloquear el scroll del cuerpo cuando el Lightbox está abierto
   useEffect(() => {
@@ -16,41 +17,87 @@ export default function PortfolioGallery({ works, categories }: { works: any[], 
     }
   }, [selectedImage])
 
-  // Filtrar trabajos por categoría
-  const filteredWorks = selectedCategory === 'all'
-    ? works
-    : works.filter(work => work.category === selectedCategory)
+  // Filtrar trabajos por categoría y búsqueda
+  const filteredWorks = works.filter(work => {
+    const matchesCategory = selectedCategory === 'all' || 
+                          (selectedCategory === 'none' && !work.categoryId) ||
+                          work.categoryId === selectedCategory
+    
+    const matchesSearch = searchTerm === '' || 
+                         work.title.toLowerCase().includes(searchTerm.toLowerCase())
+    
+    return matchesCategory && matchesSearch
+  })
 
   return (
     <section className="py-20 px-6 max-w-7xl mx-auto">
-      {/* FILTROS DE CATEGORÍA */}
-      <div className="flex flex-wrap justify-center gap-4 mb-12">
-        <button
-          onClick={() => setSelectedCategory('all')}
-          className={`px-6 py-2 text-sm uppercase tracking-widest border transition-all duration-300 ${
-            selectedCategory === 'all'
-              ? 'border-white text-white bg-white/10'
-              : 'border-zinc-700 text-zinc-500 hover:border-zinc-500 hover:text-zinc-400'
-          }`}
-        >
-          Todos
-        </button>
-        {categories.map((category) => (
+      {/* FILTROS Y BÚSQUEDA */}
+      <div className="mb-12 space-y-8">
+        {/* Barra de búsqueda */}
+        <div className="flex justify-center">
+          <input
+            type="text"
+            placeholder="Buscar por título..."
+            value={searchTerm}
+            onChange={(e) => setSearchTerm(e.target.value)}
+            className="w-full max-w-md px-4 py-2 bg-zinc-900 border border-zinc-700 text-white placeholder-zinc-500 focus:border-white focus:outline-none transition-colors"
+          />
+        </div>
+
+        {/* Filtros de categoría */}
+        <div className="flex flex-wrap justify-center gap-4">
           <button
-            key={category}
-            onClick={() => setSelectedCategory(category)}
+            onClick={() => setSelectedCategory('all')}
             className={`px-6 py-2 text-sm uppercase tracking-widest border transition-all duration-300 ${
-              selectedCategory === category
+              selectedCategory === 'all'
                 ? 'border-white text-white bg-white/10'
                 : 'border-zinc-700 text-zinc-500 hover:border-zinc-500 hover:text-zinc-400'
             }`}
           >
-            {category}
+            Todos
           </button>
-        ))}
+          <button
+            onClick={() => setSelectedCategory('none')}
+            className={`px-6 py-2 text-sm uppercase tracking-widest border transition-all duration-300 ${
+              selectedCategory === 'none'
+                ? 'border-white text-white bg-white/10'
+                : 'border-zinc-700 text-zinc-500 hover:border-zinc-500 hover:text-zinc-400'
+            }`}
+          >
+            Sin Categoría
+          </button>
+          {categories.map((category) => (
+            <button
+              key={category.id}
+              onClick={() => setSelectedCategory(category.id)}
+              className={`px-6 py-2 text-sm uppercase tracking-widest border transition-all duration-300 ${
+                selectedCategory === category.id
+                  ? 'border-white text-white bg-white/10'
+                  : 'border-zinc-700 text-zinc-500 hover:border-zinc-500 hover:text-zinc-400'
+              }`}
+            >
+              {category.name}
+            </button>
+          ))}
+        </div>
       </div>
 
-      {/* Grid de Imágenes */}
+      {/* Indicador de resultados */}
+      <div className="text-center mb-8">
+        <p className="text-zinc-500 text-sm uppercase tracking-widest">
+          {filteredWorks.length} obra{filteredWorks.length !== 1 ? 's' : ''} encontrada{filteredWorks.length !== 1 ? 's' : ''}
+          {selectedCategory !== 'all' && (
+            <span className="ml-2">
+              en {selectedCategory === 'none' ? 'Sin Categoría' : categories.find(c => c.id === selectedCategory)?.name}
+            </span>
+          )}
+          {searchTerm && (
+            <span className="ml-2">
+              para "{searchTerm}"
+            </span>
+          )}
+        </p>
+      </div>
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
         {filteredWorks.map((work) => (
           <motion.div

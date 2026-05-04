@@ -7,9 +7,10 @@ import AboutSection from '@/components/AboutSection'
 export const dynamic = 'force-dynamic'
 
 export default async function Home() {
-  // 1. Traemos todos los trabajos de la base de datos
+  // 1. Traemos todos los trabajos de la base de datos con categorías incluidas
   const works = await prisma.tattooWork.findMany({
-    orderBy: { createdAt: 'desc' }
+    orderBy: { createdAt: 'desc' },
+    include: { category: true }
   })
 
   // 2. Traemos colaboradores
@@ -17,9 +18,10 @@ export default async function Home() {
     orderBy: { createdAt: 'asc' }
   })
 
-  // 3. Extraemos las categorías únicas
-  const rawCategories = works.map(w => w.category).filter((c): c is string => !!c)
-  const categories = Array.from(new Set(rawCategories))
+  // 3. Traemos todas las categorías disponibles
+  const categories = await prisma.category.findMany({
+    orderBy: { name: 'asc' }
+  })
 
   return (
     <main className="min-h-screen bg-black text-white selection:bg-white selection:text-black pt-20">
