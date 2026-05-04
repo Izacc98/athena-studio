@@ -8,11 +8,11 @@ export default function Navigation() {
   const [isMenuOpen, setIsMenuOpen] = useState(false)
 
   const menuItems = [
-    { href: '/home', label: 'Inicio' },
-    { href: '/sobre-nosotros', label: 'Sobre Nosotros' },
-    { href: '/faq', label: 'Preguntas Frecuentes' },
+    { href: '/colaboradores', label: 'Colaboradores' },
+    { href: '/sobre-nosotros', label: 'Conócenos' },
+    { href: '/ubicacion', label: 'Ubicación' },
+    { href: '/home', label: 'Nuestro Trabajo' },
     { href: '/seguridad', label: 'Seguridad Sanitaria' },
-    { href: '/agendar', label: 'Agendar Cita' },
   ]
 
   const closeMenu = () => setIsMenuOpen(false)
