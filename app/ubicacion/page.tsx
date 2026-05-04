@@ -26,17 +26,17 @@ export default function UbicacionPage() {
                 <div className="space-y-4 text-zinc-400">
                   <p className="flex items-center gap-3">
                     <span className="text-zinc-600">📍</span>
-                    Calle Principal 123, Centro Histórico
+                    Av 17 Pte 1113, Barrio de Santiago
                     <br />
-                    Ciudad de México, CDMX
+                    72410 Heroica Puebla de Zaragoza, Pue.
                   </p>
                   <p className="flex items-center gap-3">
                     <span className="text-zinc-600">📞</span>
-                    +52 55 1234 5678
+                    +52 1 221 128 4038
                   </p>
                   <p className="flex items-center gap-3">
                     <span className="text-zinc-600">📧</span>
-                    info@athenastudio.mx
+                    arthur.rommero@gmail.com
                   </p>
                   <p className="flex items-center gap-3">
                     <span className="text-zinc-600">🕒</span>
@@ -48,32 +48,22 @@ export default function UbicacionPage() {
                   </p>
                 </div>
               </div>
-
-              <div>
-                <h3 className="text-xl font-black uppercase tracking-tight mb-4">
-                  Transporte Público
-                </h3>
-                <ul className="space-y-2 text-zinc-400 text-sm">
-                  <li>• Metro: Estación Centro Médico (Línea 3)</li>
-                  <li>• Metrobús: Línea 1 - Plaza de la República</li>
-                  <li>• Estacionamiento gratuito disponible</li>
-                </ul>
-              </div>
             </div>
           </FadeIn>
 
           {/* Mapa */}
           <FadeIn>
             <div className="rounded-3xl border border-zinc-900 bg-zinc-950 overflow-hidden">
-              <div className="aspect-square bg-zinc-900 flex items-center justify-center">
-                <div className="text-center text-zinc-600">
-                  <div className="text-6xl mb-4">🗺️</div>
-                  <p className="text-lg">Mapa Interactivo</p>
-                  <p className="text-sm mt-2">
-                    Próximamente con ubicación exacta
-                  </p>
-                </div>
-              </div>
+              <iframe 
+                src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3771.4838306841793!2d-98.21305432410385!3d19.042453582155222!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x85cfc1002d758389%3A0x5ce6244bc6928262!2sATHENA%20STUDIO!5e0!3m2!1ses-419!2smx!4v1777930972179!5m2!1ses-419!2smx" 
+                width="600" 
+                height="450" 
+                style={{border: 0}} 
+                allowFullScreen 
+                loading="lazy" 
+                referrerPolicy="no-referrer-when-downgrade"
+                className="w-full h-full min-h-[400px]"
+              ></iframe>
             </div>
           </FadeIn>
         </div>
